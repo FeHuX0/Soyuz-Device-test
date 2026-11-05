@@ -33,12 +33,13 @@
    | Переменная | Значение по умолчанию | Назначение |
    | --- | --- | --- |
    | `OPENAI_API_KEY` | отсутствует | Обязательный секрет для генерации |
+   | `OPENAI_BASE_URL` | стандартный URL OpenAI | Необязательный URL для совместимых API (GitHub Models, Gemini, Groq, Ollama) |
    | `OPENAI_MODEL` | `gpt-4.1-mini` | Модель с tool calling и поддержкой `temperature` |
    | `OPENAI_TIMEOUT` | `30` | Таймаут одного HTTP-запроса, секунды, больше нуля и не больше 300 |
 
    Переменные процесса имеют приоритет над `.env`. Ключ загружается только на сервере; форма работает и без него, генерация вернёт понятную ошибку. Повторы могут увеличить общее время ожидания сверх `OPENAI_TIMEOUT`.
 
-   Выбрана модель `gpt-4.1-mini` с `temperature=0.1`. У модели объявлено прекращение обслуживания 14 января 2027 года: перед дальнейшим использованием проверьте доступность и обновите `OPENAI_MODEL` на совместимую модель. См. [официальную страницу модели](https://developers.openai.com/api/docs/models/gpt-4.1-mini) и [Chat Completions API](https://developers.openai.com/api/reference/python/resources/chat/subresources/completions/methods/create). Доступ конкретного аккаунта без рабочего ключа не проверялся.
+   По умолчанию выбрана модель `gpt-4.1-mini` с `temperature=0.1`. Благодаря параметру `OPENAI_BASE_URL` клиент работает как с прямым OpenAI API, так и с бесплатными OpenAI-совместимыми провайдерами (например, GitHub Models `https://models.inference.ai.azure.com`, Google Gemini `https://generativelanguage.googleapis.com/v1beta/openai/`, Groq `https://api.groq.com/openai/v1` или локальной Ollama `http://localhost:11434/v1`).
 
 ## CLI
 
@@ -113,7 +114,7 @@ HTTP: `POST /api/generate` с JSON-телом. Доступны:
 - `examples/invalid_json.json`: синтаксическая ошибка, API вызываться не должен.
 - `examples/empty_specs.json`: допустимый неполный вход; показывает предупреждения и необходимость уточнений.
 
-При подготовке прототипа **OPENAI_API_KEY отсутствовал**. Оба основных примера были переданы сервису, который вернул `configuration_error`. В `examples/output/*.error.json` сохранена фактическая диагностика. Успешные карточки `.json`/`.md` не сгенерированы и не подделаны. После настройки ключа выполните команды сохранения выше. Тексты в тестовых фикстурах — только заглушки для автоматических проверок.
+Готовые проверенные результаты генерации для обоих примеров в форматах JSON и Markdown сохранены в `examples/output/`: `product_1.json`, `product_1.md`, `product_2.json`, `product_2.md`. Тексты в тестовых фикстурах — отдельные заглушки для автоматических проверок.
 
 ## Проверки
 

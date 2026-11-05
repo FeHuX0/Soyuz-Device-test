@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 def isolate_env(monkeypatch, mocker):
     # Тесты не читают настоящий .env и не используют ключ разработчика.
     mocker.patch("src.config.load_dotenv")
-    for name in ("OPENAI_API_KEY", "OPENAI_MODEL", "OPENAI_TIMEOUT"):
+    for name in ("OPENAI_API_KEY", "OPENAI_BASE_URL", "OPENAI_MODEL", "OPENAI_TIMEOUT"):
         monkeypatch.delenv(name, raising=False)
 
 

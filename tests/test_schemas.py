@@ -1,7 +1,10 @@
 import pytest
 from pydantic import ValidationError
 
+from src.render import to_markdown
 from src.schemas import ProductCard
+from src.validators import find_missing_fields, parse_product
+from tests.conftest import ROOT
 
 
 @pytest.mark.parametrize(
@@ -80,3 +83,17 @@ def test_cannot_silently_omit_or_duplicate_spec(card_data, context):
 def test_decimal_separator_and_unit_spaces_normalized(card_data, context):
     card_data["seo_description"] = card_data["seo_description"].replace("0–1,6 МПа", "0-1.6МПа")
     ProductCard.model_validate(card_data, context=context)
+
+
+@pytest.mark.parametrize("name", ["product_1", "product_2"])
+def test_saved_example_outputs_are_valid_and_grounded(name):
+    raw_in = (ROOT / f"examples/{name}.json").read_text(encoding="utf-8")
+    raw_out = (ROOT / f"examples/output/{name}.json").read_text(encoding="utf-8")
+    md_out = (ROOT / f"examples/output/{name}.md").read_text(encoding="utf-8")
+    product = parse_product(raw_in)
+    missing = find_missing_fields(product)
+    card = ProductCard.model_validate_json(
+        raw_out,
+        context={"product": product, "missing_fields": missing},
+    )
+    assert to_markdown(card) == md_out
