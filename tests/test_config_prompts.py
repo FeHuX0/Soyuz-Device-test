@@ -16,11 +16,13 @@ def test_invalid_timeout_has_no_secret(monkeypatch, timeout):
 
 def test_key_model_and_timeout_from_env(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "test-secret")
+    monkeypatch.setenv("OPENAI_BASE_URL", "https://models.inference.ai.azure.com")
     monkeypatch.setenv("OPENAI_MODEL", "test-model")
     monkeypatch.setenv("OPENAI_TIMEOUT", "12")
     settings = load_settings()
     assert settings.timeout == 12
     assert settings.model == "test-model"
+    assert settings.base_url == "https://models.inference.ai.azure.com"
     assert "test-secret" not in repr(settings)
 
 

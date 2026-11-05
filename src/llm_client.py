@@ -15,6 +15,7 @@ def create_client(settings: Settings) -> Iterator[instructor.Instructor]:
     # с экспоненциальным backoff и jitter. Собственного цикла валидации нет.
     with OpenAI(
         api_key=settings.api_key.get_secret_value(),
+        base_url=settings.base_url,
         timeout=settings.timeout,
         max_retries=2,
     ) as sdk:
