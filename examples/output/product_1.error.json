@@ -1,0 +1,7 @@
+{
+  "error": "Нет OPENAI_API_KEY. Укажите ключ в окружении или файле .env.",
+  "code": "configuration_error",
+  "missing_fields": [],
+  "warnings": [],
+  "last_attempt": null
+}

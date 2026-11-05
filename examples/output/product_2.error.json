@@ -1,0 +1,11 @@
+{
+  "error": "Нет OPENAI_API_KEY. Укажите ключ в окружении или файле .env.",
+  "code": "configuration_error",
+  "missing_fields": [
+    "manufacturer",
+    "specs.Диапазон измерений",
+    "specs.Точность / погрешность"
+  ],
+  "warnings": [],
+  "last_attempt": null
+}
